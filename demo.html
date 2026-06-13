@@ -1,0 +1,1807 @@
+
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Green Wheel - Web Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #08c486;
+      --green-2: #00a873;
+      --green-dark: #049466;
+      --mint: #eafff6;
+      --mint-2: #ddfbef;
+      --navy: #0b1428;
+      --text: #0b1634;
+      --muted: #637596;
+      --soft: #f6faf9;
+      --line: #dfe8ef;
+      --card: #ffffff;
+      --warning: #ffb000;
+      --danger: #ff5b5b;
+      --shadow: 0 16px 35px rgba(8, 196, 134, .18), 0 4px 10px rgba(13, 31, 53, .08);
+      --shadow-soft: 0 8px 18px rgba(13, 31, 53, .08);
+      --radius: 26px;
+      --phone-w: 430px;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(8,196,134,.20), transparent 32rem),
+        linear-gradient(135deg, #edf3f8, #f7fbff);
+      color: var(--text);
+      font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: grid;
+      grid-template-columns: minmax(320px, var(--phone-w)) minmax(280px, 420px);
+      gap: 28px;
+      place-content: center;
+      padding: 26px;
+    }
+
+    .phone {
+      width: min(100vw - 24px, var(--phone-w));
+      height: 905px;
+      max-height: calc(100vh - 32px);
+      background: #f9fcfb;
+      border: 8px solid #111a2e;
+      border-radius: 48px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(12, 20, 38, .22);
+    }
+
+    .app {
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      background: #fbfefd;
+    }
+
+    .screen {
+      display: none;
+      height: 100%;
+      overflow-y: auto;
+      padding: 18px 24px 92px;
+      scrollbar-width: none;
+    }
+    .screen::-webkit-scrollbar { display: none; }
+    .screen.active { display: block; animation: fade .18s ease; }
+
+    @keyframes fade { from { opacity: .35; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 30px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .dots { letter-spacing: 2px; font-size: 20px; line-height: 0; }
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      margin: 0 0 25px;
+    }
+    .bar {
+      height: 4px;
+      border-radius: 20px;
+      background: #dde8ef;
+    }
+    .bar.done { background: var(--green); }
+
+    h1, h2, h3, .brand-title {
+      font-family: "Baloo 2", "Nunito", sans-serif;
+      line-height: .96;
+      margin: 0;
+      color: #06122d;
+      letter-spacing: -.8px;
+    }
+
+    h1 { font-size: 34px; margin: 26px 0 10px; }
+    h2 { font-size: 29px; margin-bottom: 10px; }
+    h3 { font-size: 19px; }
+    p { color: var(--muted); margin: 0; line-height: 1.55; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      margin-bottom: 48px;
+    }
+    .logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: var(--green);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 28px;
+      box-shadow: 0 12px 23px rgba(8,196,134,.34);
+      flex: 0 0 auto;
+      font-weight: 900;
+    }
+    .brand-title { font-size: 28px; }
+    .brand-sub { color: #526889; font-size: 13px; margin-top: 1px; }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #f0f5fb;
+      padding: 5px;
+      border-radius: 17px;
+      margin: 34px 0 28px;
+      gap: 4px;
+    }
+    .tab {
+      border: 0;
+      padding: 13px 8px;
+      border-radius: 13px;
+      background: transparent;
+      color: #5e6d89;
+      font-weight: 900;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 15px;
+    }
+    .tab.active {
+      background: white;
+      color: var(--text);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .field {
+      border: 1.2px solid #dce7ee;
+      background: #fff;
+      border-radius: 18px;
+      padding: 17px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    .field label {
+      display: block;
+      color: #95a3bf;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: .3px;
+    }
+    input, select, textarea {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 800;
+    }
+    textarea {
+      resize: none;
+      min-height: 105px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .btn {
+      width: 100%;
+      border: 0;
+      border-radius: 17px;
+      padding: 17px 18px;
+      background: var(--green);
+      color: white;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 13px 25px rgba(8,196,134,.28);
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .btn:active { transform: translateY(1px) scale(.99); }
+    .btn.dark { background: var(--navy); box-shadow: 0 12px 24px rgba(12,20,38,.20); }
+    .btn.light {
+      color: var(--green-dark);
+      background: #f1fff9;
+      border: 1.2px solid #9ff0d2;
+      box-shadow: none;
+    }
+    .btn.ghost {
+      background: #fff;
+      color: var(--text);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid #e8eef4;
+    }
+    .btn.danger { background: var(--danger); box-shadow: 0 13px 25px rgba(255,91,91,.20); }
+    .footer-text {
+      position: absolute;
+      bottom: 28px;
+      left: 24px;
+      right: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #8b9dbb;
+      line-height: 1.7;
+    }
+    .link { color: #009a69; font-weight: 900; cursor: pointer; text-decoration: none; }
+
+    .top {
+      display: grid;
+      grid-template-columns: 48px 1fr 48px;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0 22px;
+    }
+    .top .title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 900;
+      color: #07132b;
+    }
+    .circle {
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 50%;
+      background: white;
+      color: #40506c;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 24px;
+    }
+    .circle.flat { box-shadow: none; background: transparent; }
+
+    .banner {
+      margin-top: 28px;
+      background: linear-gradient(135deg, #06bc84, #009667);
+      border-radius: 28px;
+      padding: 24px 22px;
+      color: #fff;
+      min-height: 132px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .banner p { color: #fff; font-weight: 800; font-size: 13px; }
+    .banner strong {
+      display: block;
+      font-family: "Baloo 2";
+      font-size: 31px;
+      line-height: 1;
+      margin: 14px 0 4px;
+    }
+    .banner .bolt {
+      position: absolute;
+      right: 31px;
+      top: 32px;
+      font-size: 56px;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,.1));
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .section-title {
+      font-weight: 900;
+      font-size: 18px;
+      margin: 30px 0 14px;
+      color: #07132b;
+    }
+
+    .chips {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip {
+      border: 0;
+      background: #f2f6fa;
+      padding: 9px 15px;
+      border-radius: 999px;
+      color: #61718e;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .chip.active { background: var(--green); color: #fff; }
+
+    .vehicle-card {
+      background: white;
+      border-radius: 25px;
+      padding: 18px;
+      margin: 14px 0;
+      display: grid;
+      grid-template-columns: 76px 1fr 24px;
+      gap: 14px;
+      align-items: center;
+      box-shadow: 0 8px 22px rgba(12, 20, 38, .08);
+      border: 1px solid #eef3f6;
+      cursor: pointer;
+    }
+    .thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 19px;
+      display: grid;
+      place-items: center;
+      font-size: 34px;
+      background: linear-gradient(135deg, var(--green), #08b183);
+      color: white;
+      overflow: hidden;
+    }
+    .thumb.red { background: linear-gradient(135deg, #ff7845, #ff3e65); }
+    .thumb.blue { background: linear-gradient(135deg, #25c7f3, #4a70ff); }
+    .thumb.darkgreen { background: linear-gradient(135deg, #0abf76, #047a61); }
+    .meta {
+      color: #6f7f9b;
+      font-size: 13px;
+      margin: 7px 0 5px;
+      font-weight: 700;
+    }
+    .price { color: #009c6b; font-size: 18px; font-weight: 1000; }
+    .price small { color: #72829c; font-size: 13px; font-weight: 700; }
+
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 76px;
+      background: white;
+      border-top: 1px solid #eef2f5;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      z-index: 20;
+      padding: 5px 10px 8px;
+    }
+    .nav-item {
+      border: 0;
+      background: none;
+      color: #8ba0bd;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      gap: 2px;
+    }
+    .nav-item span { font-size: 24px; line-height: 1; }
+    .nav-item.active { color: var(--green-dark); }
+
+    .hero-image {
+      height: 247px;
+      background: linear-gradient(135deg, #08c486, #06a987);
+      border-radius: 30px;
+      display: grid;
+      place-items: center;
+      font-size: 88px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 26px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-image::after {
+      content: "";
+      width: 180px;
+      height: 34px;
+      background: rgba(0,0,0,.10);
+      border-radius: 50%;
+      position: absolute;
+      bottom: 38px;
+      filter: blur(12px);
+    }
+
+    .pill {
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--green);
+      color: white;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+    .stat {
+      background: white;
+      border-radius: 18px;
+      padding: 18px 8px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid #eef3f5;
+    }
+    .stat .icon { color: var(--green); font-size: 25px; }
+    .stat strong { display: block; margin: 12px 0 3px; font-size: 16px; }
+    .stat small { color: #8c9bb8; font-size: 12px; }
+
+    .price-card, .card {
+      background: white;
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid #eef4f7;
+      margin: 12px 0;
+    }
+    .fixed-bottom {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      right: 24px;
+      z-index: 30;
+    }
+
+    .map-card {
+      border-radius: 28px;
+      padding: 18px;
+      background: #eafff4;
+      margin: 22px 0;
+    }
+    .map-head {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .map-pin {
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      background: var(--green);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+    }
+    .fake-map {
+      height: 145px;
+      border-radius: 20px;
+      background:
+        linear-gradient(35deg, transparent 42%, #dcfaee 42% 55%, transparent 55%),
+        linear-gradient(-35deg, transparent 42%, #dcfaee 42% 55%, transparent 55%),
+        #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .fake-map .pin {
+      position: absolute;
+      left: 49%;
+      top: 44%;
+      font-size: 34px;
+      transform: translate(-50%, -50%);
+      color: var(--green);
+    }
+    .fake-map .label {
+      position: absolute;
+      left: 50%;
+      top: 66%;
+      transform: translateX(-50%);
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 11px;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: var(--shadow-soft);
+      white-space: nowrap;
+    }
+
+    .option {
+      background: #fff;
+      border: 1.4px solid #eef2f5;
+      border-radius: 17px;
+      padding: 17px 18px;
+      margin: 11px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .option.active {
+      border-color: var(--green);
+      background: #f0fff8;
+    }
+    .check {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #c7d5e3;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 12px;
+      flex: 0 0 auto;
+    }
+    .option.active .check {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .consent {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 12px;
+      align-items: flex-start;
+      margin: 18px 0 92px;
+      color: #60718e;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .square-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      background: var(--green);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      margin-top: 2px;
+    }
+
+    .pay-method {
+      grid-template-columns: 31px 1fr 26px;
+      display: grid;
+      align-items: center;
+      gap: 12px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      color: #60718e;
+      font-weight: 700;
+      margin: 12px 0;
+    }
+    .summary-row.total {
+      color: var(--text);
+      font-weight: 1000;
+      padding-top: 13px;
+      border-top: 1px dashed #dce4ea;
+      margin-top: 15px;
+    }
+    .included {
+      padding: 11px 13px;
+      background: #e6fff4;
+      border-radius: 13px;
+      color: #008b61;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .active-card {
+      border-radius: 26px;
+      background: linear-gradient(135deg, #08c486, #04b978);
+      color: white;
+      padding: 24px;
+      margin: 25px 0 20px;
+      box-shadow: var(--shadow);
+    }
+    .active-card p, .active-card .meta { color: white; }
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.20);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .star-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 26px 0;
+      font-size: 42px;
+      color: var(--warning);
+    }
+    .star {
+      cursor: pointer;
+      filter: drop-shadow(0 5px 8px rgba(255,176,0,.20));
+      opacity: .28;
+    }
+    .star.active { opacity: 1; }
+
+    .success-mark {
+      width: 112px;
+      height: 112px;
+      background: #c9fbe3;
+      border-radius: 50%;
+      margin: 132px auto 34px;
+      display: grid;
+      place-items: center;
+    }
+    .success-mark span {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 40px;
+    }
+
+    .side-panel {
+      align-self: center;
+      background: rgba(255,255,255,.80);
+      border: 1px solid rgba(255,255,255,.70);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 24px 70px rgba(12,20,38,.10);
+      backdrop-filter: blur(18px);
+    }
+    .side-panel h2 { font-size: 28px; margin-bottom: 8px; }
+    .side-panel .small { font-size: 14px; color: #60718e; line-height: 1.55; }
+    .feature-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .feature {
+      display: grid;
+      grid-template-columns: 33px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #edf3f7;
+    }
+    .feature b { display: block; font-size: 14px; margin-bottom: 2px; }
+    .feature span { color: #647596; font-size: 13px; line-height: 1.4; }
+    .mini-icon {
+      width: 33px;
+      height: 33px;
+      border-radius: 11px;
+      background: #e9fff6;
+      color: var(--green-dark);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .toast {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 92px;
+      background: #07132b;
+      color: #fff;
+      padding: 13px 15px;
+      border-radius: 15px;
+      font-weight: 800;
+      z-index: 99;
+      box-shadow: var(--shadow-soft);
+      display: none;
+      animation: toast .24s ease;
+    }
+    @keyframes toast { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    .modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(7, 19, 43, .48);
+      display: none;
+      align-items: flex-end;
+      z-index: 60;
+      padding: 18px;
+    }
+    .modal.active { display: flex; }
+    .sheet {
+      width: 100%;
+      background: #fff;
+      border-radius: 26px;
+      padding: 22px;
+      box-shadow: 0 -16px 55px rgba(0,0,0,.16);
+    }
+    .sheet h3 { font-size: 23px; margin-bottom: 10px; }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .upload-box {
+      border: 1.5px dashed #b9c9d7;
+      border-radius: 18px;
+      min-height: 112px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #60718e;
+      font-weight: 900;
+      background: #fbfefd;
+      cursor: pointer;
+      padding: 10px;
+    }
+    .upload-box.done {
+      border-color: var(--green);
+      color: var(--green-dark);
+      background: #f0fff8;
+    }
+
+    .help-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .help-tile {
+      background: white;
+      border: 1px solid #edf3f7;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+    }
+    .help-tile b { display: block; margin-top: 8px; }
+
+    .timeline {
+      margin: 16px 0;
+      position: relative;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: #d9ebe5;
+    }
+    .step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 11px;
+      margin: 14px 0;
+      align-items: start;
+    }
+    .step-dot {
+      width: 29px;
+      height: 29px;
+      border-radius: 50%;
+      background: #e9f1f5;
+      color: #8ba0bd;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .step.done .step-dot { background: var(--green); color: white; }
+    .step b { display: block; font-size: 14px; }
+    .step small { color: #6f7f9b; line-height: 1.45; display: block; margin-top: 3px; }
+
+    .route-map {
+      height: 220px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 22% 38%, rgba(8,196,134,.18) 0 7px, transparent 8px),
+        radial-gradient(circle at 70% 65%, rgba(255,176,0,.22) 0 8px, transparent 9px),
+        linear-gradient(35deg, transparent 42%, #e5f3ee 42% 55%, transparent 55%),
+        linear-gradient(-35deg, transparent 44%, #e5f3ee 44% 56%, transparent 56%),
+        #fff;
+      position: relative;
+      border: 1px solid #edf3f7;
+      overflow: hidden;
+      margin-top: 16px;
+    }
+    .route-line {
+      position: absolute;
+      left: 64px;
+      top: 82px;
+      width: 230px;
+      height: 4px;
+      background: repeating-linear-gradient(90deg, var(--green) 0 12px, transparent 12px 20px);
+      transform: rotate(20deg);
+      border-radius: 20px;
+    }
+    .driver {
+      position: absolute;
+      left: 150px;
+      top: 101px;
+      font-size: 34px;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,.13));
+    }
+    .loc {
+      position: absolute;
+      font-weight: 900;
+      font-size: 12px;
+      background: white;
+      border-radius: 999px;
+      padding: 7px 10px;
+      box-shadow: var(--shadow-soft);
+    }
+    .loc.a { left: 26px; top: 55px; color: var(--green-dark); }
+    .loc.b { right: 24px; bottom: 46px; color: #f38a00; }
+
+    .profile-head {
+      background: linear-gradient(135deg, #07132b, #112349);
+      border-radius: 26px;
+      padding: 22px;
+      color: white;
+      margin: 16px 0 18px;
+    }
+    .avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+      background: #fff;
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-weight: 1000;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    .profile-head p { color: #d3dceb; }
+    .list-item {
+      background: white;
+      border: 1px solid #edf3f7;
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      font-weight: 900;
+    }
+    .badge-soft {
+      background: #e9fff6;
+      color: var(--green-dark);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 60px 18px;
+      color: #71819c;
+    }
+    .empty .emoji { font-size: 52px; }
+
+    .kbd {
+      font-family: inherit;
+      font-size: 13px;
+      background: #f3f7fb;
+      border: 1px solid #e2ebf2;
+      padding: 3px 7px;
+      border-radius: 8px;
+      color: #60718e;
+      font-weight: 900;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+      .side-panel { display: none; }
+      .phone {
+        max-height: none;
+        height: 100dvh;
+        border-radius: 0;
+        border: 0;
+        width: 100vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <div class="app" id="app">
+      <div class="toast" id="toast"></div>
+
+      <section class="screen active" id="authScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="brand">
+          <div class="logo">ϟ</div>
+          <div>
+            <div class="brand-title">Green Wheel</div>
+            <div class="brand-sub">Thuê xe điện thông minh</div>
+          </div>
+        </div>
+
+        <div id="loginBox">
+          <h1>Chào mừng trở lại!</h1>
+          <p>Đăng nhập để thuê xe và khám phá thành phố xanh.</p>
+          <div class="tabs">
+            <button class="tab active" onclick="switchAuth('login')">Đăng nhập</button>
+            <button class="tab" onclick="switchAuth('register')">Đăng ký</button>
+          </div>
+          <div class="field">
+            <label>Email / Số điện thoại</label>
+            <input id="loginEmail" value="nguyenha@gmail.com" />
+          </div>
+          <div class="field">
+            <label>Mật khẩu</label>
+            <input id="loginPassword" type="password" value="12345678" />
+          </div>
+          <button class="btn" onclick="login()">Đăng nhập</button>
+        </div>
+
+        <div id="registerBox" style="display:none;">
+          <h1>Tạo tài khoản</h1>
+          <p>Bắt đầu hành trình xanh chỉ trong vài bước.</p>
+          <div class="tabs">
+            <button class="tab" onclick="switchAuth('login')">Đăng nhập</button>
+            <button class="tab active" onclick="switchAuth('register')">Đăng ký</button>
+          </div>
+          <div class="field">
+            <label>Họ và tên</label>
+            <input id="regName" value="Nguyễn Hà" />
+          </div>
+          <div class="field">
+            <label>Email / Số điện thoại</label>
+            <input id="regEmail" value="nguyenha@gmail.com" />
+          </div>
+          <div class="field">
+            <label>Mật khẩu</label>
+            <input id="regPassword" type="password" value="12345678" />
+          </div>
+          <button class="btn" onclick="startOtp()">Đăng ký tài khoản</button>
+        </div>
+
+        <div class="footer-text">
+          Bằng cách tiếp tục, bạn đồng ý với<br>
+          <span class="link" onclick="openPolicy()">Điều khoản sử dụng</span> và
+          <span class="link" onclick="openPolicy()">Chính sách bảo mật</span>.
+        </div>
+      </section>
+
+      <section class="screen" id="otpScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="top">
+          <button class="circle" onclick="showScreen('authScreen')">‹</button>
+          <div class="title">Xác thực OTP</div>
+          <div></div>
+        </div>
+        <div class="progress"><span class="bar done"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+        <h1>Nhập mã OTP</h1>
+        <p>Hệ thống đã gửi mã xác thực đến <b id="otpTarget">nguyenha@gmail.com</b>.</p>
+        <div class="field" style="margin-top:28px;">
+          <label>Mã OTP demo</label>
+          <input id="otp" inputmode="numeric" maxlength="6" value="123456" />
+        </div>
+        <p style="font-size:13px;">Mã mẫu để test: <span class="kbd">123456</span></p>
+        <div class="fixed-bottom">
+          <button class="btn" onclick="verifyOtp()">Xác thực tài khoản</button>
+        </div>
+      </section>
+
+      <section class="screen" id="kycScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="top">
+          <button class="circle" onclick="showScreen('otpScreen')">‹</button>
+          <div class="title">Xác minh danh tính</div>
+          <div></div>
+        </div>
+        <div class="progress"><span class="bar done"></span><span class="bar done"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+        <h1>Chụp CCCD & khuôn mặt</h1>
+        <p>Tài khoản cần xác minh trước khi đặt xe để bảo đảm an toàn dịch vụ.</p>
+        <div class="grid2" style="margin-top:24px;">
+          <div class="upload-box" id="frontId" onclick="markUpload('frontId')">📄<br>Mặt trước CCCD</div>
+          <div class="upload-box" id="backId" onclick="markUpload('backId')">📄<br>Mặt sau CCCD</div>
+        </div>
+        <div class="upload-box" id="faceId" style="margin-top:12px;" onclick="markUpload('faceId')">🤳<br>Ảnh khuôn mặt</div>
+        <div class="card" style="margin-top:20px;">
+          <div class="row"><b>Trạng thái kiểm tra</b><span class="badge-soft" id="kycStatus">Chưa đủ ảnh</span></div>
+          <p style="font-size:13px; margin-top:8px;">Demo sẽ tự xác thực khi bạn bấm đủ 3 mục phía trên.</p>
+        </div>
+        <div class="fixed-bottom">
+          <button class="btn" onclick="finishKyc()">Hoàn tất đăng ký</button>
+        </div>
+      </section>
+
+      <section class="screen" id="homeScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="progress"><span class="bar done"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+        <div class="row">
+          <div>
+            <p>Xin chào, <span id="helloName">Hà</span> 👋</p>
+            <h1 style="margin:4px 0 0;">Thuê xe điện</h1>
+          </div>
+          <button class="circle" onclick="goTab('profile')">♙</button>
+        </div>
+        <div class="banner">
+          <p>Ưu đãi hôm nay</p>
+          <strong>Giảm 20.000đ</strong>
+          <p>Ưu đãi dành cho chuyến thuê đầu tiên</p>
+          <span class="bolt">⚡</span>
+        </div>
+
+        <div class="row">
+          <div class="section-title">Chọn loại xe</div>
+          <span class="link" onclick="filterVehicle('all')">Xem tất cả</span>
+        </div>
+        <div class="chips">
+          <button class="chip active" data-filter="suggest" onclick="filterVehicle('suggest')">Đề xuất</button>
+          <button class="chip" data-filter="bike" onclick="filterVehicle('bike')">Xe máy</button>
+          <button class="chip" data-filter="car" onclick="filterVehicle('car')">Ô tô</button>
+          <button class="chip" data-filter="near" onclick="filterVehicle('near')">Gần tôi</button>
+        </div>
+        <div id="vehicleList"></div>
+
+        <div class="bottom-nav">
+          <button class="nav-item active" onclick="goTab('home')"><span>⌂</span>Trang chủ</button>
+          <button class="nav-item" onclick="goTab('trips')"><span>⚭</span>Chuyến đi</button>
+          <button class="nav-item" onclick="goTab('offers')"><span>♙</span>Ưu đãi</button>
+          <button class="nav-item" onclick="goTab('profile')"><span>♙</span>Cá nhân</button>
+        </div>
+      </section>
+
+      <section class="screen" id="vehicleScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="progress"><span class="bar done"></span><span class="bar done"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+        <div class="top">
+          <button class="circle" onclick="showScreen('homeScreen')">‹</button>
+          <div class="title">Chi tiết xe</div>
+          <button class="circle flat" onclick="toggleFav()">♡</button>
+        </div>
+        <div class="hero-image" id="detailHero">🛵</div>
+        <div class="row">
+          <span class="link" id="detailType">Xe máy điện</span>
+          <span class="pill" id="detailTag">Phổ biến</span>
+        </div>
+        <h1 id="detailName" style="margin:10px 0 0;">VinFast Evo200</h1>
+        <div class="stat-grid">
+          <div class="stat"><div class="icon">⌁</div><strong id="detailBattery">100%</strong><small>Pin</small></div>
+          <div class="stat"><div class="icon">⌾</div><strong id="detailRange">160 km</strong><small>Quãng đường</small></div>
+          <div class="stat"><div class="icon">◷</div><strong>24 giờ</strong><small>Thời gian</small></div>
+        </div>
+        <div class="price-card">
+          <div class="row">
+            <div>
+              <p>Giá thuê</p>
+              <div class="price" id="detailPrice">150.000đ <small>/ ngày</small></div>
+            </div>
+            <b style="color:#07132b;">⭐ <span id="detailRating">4.9</span></b>
+          </div>
+        </div>
+        <div class="card">
+          <b>Mô tả</b>
+          <p style="font-size:14px; margin-top:7px;">Xe đã kiểm tra an toàn, pin đầy, phù hợp sinh viên, người đi làm và khách du lịch di chuyển trong thành phố.</p>
+        </div>
+        <div class="fixed-bottom">
+          <button class="btn" onclick="startBooking()">Chọn xe này</button>
+        </div>
+      </section>
+
+      <section class="screen" id="bookingScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="progress"><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar"></span><span class="bar"></span></div>
+        <div class="top">
+          <button class="circle" onclick="showScreen('vehicleScreen')">‹</button>
+          <div class="title">Giao xe tận nơi</div>
+          <div></div>
+        </div>
+        <h1>Chọn địa điểm giao xe</h1>
+        <div class="map-card">
+          <div class="map-head">
+            <div class="map-pin">⌖</div>
+            <div>
+              <p>Địa chỉ giao xe</p>
+              <input id="deliveryAddress" value="36 Bạch Đằng, Hải Châu, Đà Nẵng" />
+            </div>
+          </div>
+          <div class="fake-map">
+            <div class="pin">⌖</div>
+            <div class="label">Vị trí của bạn</div>
+          </div>
+        </div>
+        <div class="section-title">Thời gian thuê</div>
+        <div class="field">
+          <label>Gói thuê</label>
+          <select id="rentalPackage" onchange="updateEstimate()">
+            <option value="hour">Theo giờ - 50.000đ/giờ</option>
+            <option value="day" selected>1 ngày - 150.000đ/ngày</option>
+            <option value="days">3 ngày - 420.000đ</option>
+            <option value="week">7 ngày - 900.000đ</option>
+          </select>
+        </div>
+        <div class="option" data-time="now" onclick="selectDeliveryTime('now')">
+          <span>Giao ngay • 15–20 phút</span><span class="check">✓</span>
+        </div>
+        <div class="option active" data-time="today" onclick="selectDeliveryTime('today')">
+          <span>Hôm nay • 18:00–18:30</span><span class="check">✓</span>
+        </div>
+        <div class="option" data-time="tomorrow" onclick="selectDeliveryTime('tomorrow')">
+          <span>Ngày mai • 08:00–08:30</span><span class="check">✓</span>
+        </div>
+        <div class="consent">
+          <span class="square-check">✓</span>
+          <span>Tôi đã đọc và đồng ý với <span class="link" onclick="openPolicy()">điều kiện thuê xe</span>, chính sách bồi thường và quy định trả xe đúng hạn.</span>
+        </div>
+        <div class="fixed-bottom">
+          <button class="btn" onclick="goPayment()">Tiếp tục thanh toán</button>
+        </div>
+      </section>
+
+      <section class="screen" id="paymentScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="progress"><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar"></span></div>
+        <div class="top">
+          <button class="circle" onclick="showScreen('bookingScreen')">‹</button>
+          <div class="title">Thanh toán</div>
+          <div></div>
+        </div>
+        <div class="vehicle-card" style="grid-template-columns:70px 1fr; cursor:auto;">
+          <div class="thumb" id="payThumb">🛵</div>
+          <div>
+            <h3 id="payName">VinFast Evo200</h3>
+            <div class="meta">⌖ Giao tại <span id="payAddress">Hải Châu, Đà Nẵng</span></div>
+          </div>
+        </div>
+        <div class="section-title">Mã giảm giá</div>
+        <div class="row">
+          <div class="field" style="margin:0; flex:1;"><input id="voucher" placeholder="🎁 Nhập voucher" /></div>
+          <button class="btn light" style="width:102px; padding:17px 8px;" onclick="applyVoucher()">Áp dụng</button>
+        </div>
+
+        <div class="section-title">Phương thức thanh toán</div>
+        <div class="option active" data-pay="Momo" onclick="selectPay('Momo')">
+          <div class="pay-method"><span style="font-size:22px;color:var(--green);">▰</span><span>Ví điện tử MoMo</span><span class="check">✓</span></div>
+        </div>
+        <div class="option" data-pay="Visa" onclick="selectPay('Visa')">
+          <div class="pay-method"><span style="font-size:22px;color:var(--green);">▰</span><span>Thẻ Visa •••• 2086</span><span class="check">✓</span></div>
+        </div>
+        <div class="option" data-pay="COD" onclick="selectPay('COD')">
+          <div class="pay-method"><span style="font-size:22px;color:var(--green);">▰</span><span>Thanh toán khi nhận xe</span><span class="check">✓</span></div>
+        </div>
+        <div class="option" data-pay="Bank" onclick="selectPay('Bank')">
+          <div class="pay-method"><span style="font-size:22px;color:var(--green);">▰</span><span>Chuyển khoản ngân hàng</span><span class="check">✓</span></div>
+        </div>
+        <div class="card">
+          <div class="summary-row"><span id="packageLabel">Gói thuê xe 1 ngày</span><span id="basePrice">150.000đ</span></div>
+          <div class="included">✓ Đã bao gồm phí giao xe và bảo hiểm cơ bản</div>
+          <div class="summary-row" id="voucherLine" style="display:none;"><span>Mã khuyến mãi</span><span id="voucherAmount">-20.000đ</span></div>
+          <div class="summary-row total"><span>Tổng cộng</span><span class="price" id="totalPrice">150.000đ</span></div>
+        </div>
+        <div class="fixed-bottom">
+          <button class="btn" id="payButton" onclick="confirmPayment()">Thanh toán 150.000đ</button>
+        </div>
+      </section>
+
+      <section class="screen" id="deliveryScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="progress"><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span></div>
+        <div class="top">
+          <button class="circle" onclick="showScreen('paymentScreen')">‹</button>
+          <div class="title">Theo dõi giao xe</div>
+          <button class="circle flat" onclick="openSupport()">☎</button>
+        </div>
+        <h1>Xe đang được giao</h1>
+        <p>Nhân viên đã kiểm tra pin, phanh, đèn và đang di chuyển đến địa điểm bạn đăng ký.</p>
+        <div class="route-map">
+          <div class="route-line"></div>
+          <div class="driver">🛵</div>
+          <div class="loc a">Trạm trung tâm</div>
+          <div class="loc b">Bạn</div>
+        </div>
+        <div class="timeline">
+          <div class="step done"><span class="step-dot">✓</span><div><b>Xác nhận đơn thuê</b><small>Thông tin đã gửi qua SMS và email.</small></div></div>
+          <div class="step done"><span class="step-dot">✓</span><div><b>Kiểm tra xe</b><small>Pin 100%, phanh và đèn hoạt động tốt.</small></div></div>
+          <div class="step done"><span class="step-dot">✓</span><div><b>Đang giao xe</b><small>Dự kiến 15–20 phút.</small></div></div>
+          <div class="step"><span class="step-dot">4</span><div><b>Bàn giao & đối chiếu</b><small>Nhân viên xác nhận tài khoản đã KYC.</small></div></div>
+        </div>
+        <div class="grid2 fixed-bottom">
+          <button class="btn ghost" onclick="openSupport()">Hỗ trợ</button>
+          <button class="btn" onclick="handover()">Đã nhận xe</button>
+        </div>
+      </section>
+
+      <section class="screen" id="activeScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="progress"><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span></div>
+        <div class="top">
+          <div></div>
+          <div class="title">Chuyến thuê của bạn</div>
+          <button class="circle flat" onclick="openSupport()">☎</button>
+        </div>
+        <div class="active-card">
+          <div class="row">
+            <span class="badge">Đang sử dụng</span>
+            <b id="orderCode">#GW10286</b>
+          </div>
+          <h1 id="activeName" style="color:#fff; margin:24px 0 8px;">VinFast Evo200</h1>
+          <p>◷ Còn lại <span id="remainingTime">19 giờ 42 phút</span></p>
+        </div>
+        <div class="card">
+          <div class="row" style="align-items:flex-start;">
+            <div>
+              <h3>Xe đã được giao thành công</h3>
+              <p id="activeAddress" style="margin-top:7px;">36 Bạch Đằng, Hải Châu, Đà Nẵng</p>
+              <p style="font-size:13px;">Hỗ trợ khẩn cấp: <b>1900 6868</b></p>
+            </div>
+            <span style="font-size:28px;color:var(--green);">♢</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="card"><p>Pin hiện tại</p><h2 style="color:var(--green); margin:8px 0 0;" id="batteryNow">100%</h2></div>
+          <div class="card"><p>Đã thanh toán</p><h2 style="margin:8px 0 0;" id="paidNow">150.000đ</h2></div>
+        </div>
+        <div class="info-grid">
+          <div class="card"><p>Quãng đường</p><h2 style="margin:8px 0 0;" id="distanceNow">0 km</h2></div>
+          <div class="card"><p>Lộ trình GPS</p><h2 style="margin:8px 0 0;">Bật</h2></div>
+        </div>
+        <button class="btn light" onclick="extendRental()">Gia hạn thời gian thuê</button>
+        <button class="btn ghost" style="margin-top:12px;" onclick="simulateLowBattery()">Giả lập cảnh báo pin yếu</button>
+        <div class="fixed-bottom">
+          <button class="btn dark" onclick="goReturn()">Trả xe</button>
+        </div>
+      </section>
+
+      <section class="screen" id="returnScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="progress"><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span></div>
+        <div class="top">
+          <button class="circle" onclick="showScreen('activeScreen')">‹</button>
+          <div class="title">Trả xe & đánh giá</div>
+          <div></div>
+        </div>
+        <div class="vehicle-card" style="grid-template-columns:78px 1fr; cursor:auto;">
+          <div class="thumb" id="returnThumb">🛵</div>
+          <div>
+            <h3 id="returnName">VinFast Evo200</h3>
+            <p>Thời gian thuê: <span id="returnPackage">1 ngày</span></p>
+            <b style="color:var(--green-dark)">Không phát sinh phí</b>
+          </div>
+        </div>
+        <h1 style="text-align:center;">Trải nghiệm của bạn?</h1>
+        <p style="text-align:center;">Đánh giá giúp Green Wheel phục vụ tốt hơn</p>
+        <div class="star-row" id="stars"></div>
+        <div class="field">
+          <label>Nhận xét</label>
+          <textarea id="reviewText">Xe chạy êm, giao xe nhanh và pin đầy.</textarea>
+        </div>
+        <div class="field">
+          <label>Góp ý cải tiến</label>
+          <textarea id="feedbackText" placeholder="Ví dụ: thêm nhiều trạm trả xe, thêm chatbot hỗ trợ..."></textarea>
+        </div>
+        <div class="card" style="background:#eafff6;">
+          <div class="row" style="align-items:flex-start;">
+            <span style="font-size:24px;color:var(--green-dark);">🎁</span>
+            <p style="color:#00845c;">Giới thiệu bạn bè sử dụng Green Wheel để nhận voucher giảm 20.000đ.</p>
+          </div>
+        </div>
+        <div class="fixed-bottom">
+          <button class="btn" onclick="finishTrip()">Hoàn tất trả xe</button>
+        </div>
+      </section>
+
+      <section class="screen" id="successScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <div class="progress"><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span><span class="bar done"></span></div>
+        <div class="success-mark"><span>✓</span></div>
+        <h1 style="text-align:center;">Trả xe thành công!</h1>
+        <p style="text-align:center;">Cảm ơn bạn đã đồng hành cùng Green Wheel. Giới thiệu bạn bè đăng ký để nhận voucher <b style="color:var(--green-dark)">FRIEND20</b> trị giá 20.000đ.</p>
+        <div class="card" style="margin:34px 16px;">
+          <div class="row"><span>Đánh giá</span><b style="color:#f5a400;">⭐ <span id="finalRating">5.0</span></b></div>
+          <div class="row" style="margin-top:15px;"><span>Voucher giới thiệu</span><b style="color:var(--green-dark);">FRIEND20</b></div>
+        </div>
+        <div class="fixed-bottom" style="bottom:80px;">
+          <button class="btn" onclick="goHomeAfterSuccess()">Về trang chủ</button>
+          <button class="btn ghost" style="margin-top:12px;" onclick="logout()">↪ Đăng xuất</button>
+        </div>
+      </section>
+
+      <section class="screen" id="tripsScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <h1>Chuyến đi</h1>
+        <p>Theo dõi đơn đang hoạt động và lịch sử thuê xe.</p>
+        <div id="tripsContent"></div>
+        <div class="bottom-nav">
+          <button class="nav-item" onclick="goTab('home')"><span>⌂</span>Trang chủ</button>
+          <button class="nav-item active" onclick="goTab('trips')"><span>⚭</span>Chuyến đi</button>
+          <button class="nav-item" onclick="goTab('offers')"><span>♙</span>Ưu đãi</button>
+          <button class="nav-item" onclick="goTab('profile')"><span>♙</span>Cá nhân</button>
+        </div>
+      </section>
+
+      <section class="screen" id="offersScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <h1>Ưu đãi</h1>
+        <p>Dùng mã ở màn hình thanh toán để giảm giá.</p>
+        <div class="banner"><p>Khuyến mãi đầu tiên</p><strong>WELCOME20</strong><p>Giảm 20.000đ cho đơn đầu tiên.</p><span class="bolt">🎁</span></div>
+        <div class="banner" style="background:linear-gradient(135deg,#ff9a3d,#ff5b5b);"><p>Giới thiệu bạn bè</p><strong>FRIEND20</strong><p>Nhận voucher 20.000đ sau khi bạn bè đăng ký.</p><span class="bolt">⭐</span></div>
+        <div class="bottom-nav">
+          <button class="nav-item" onclick="goTab('home')"><span>⌂</span>Trang chủ</button>
+          <button class="nav-item" onclick="goTab('trips')"><span>⚭</span>Chuyến đi</button>
+          <button class="nav-item active" onclick="goTab('offers')"><span>♙</span>Ưu đãi</button>
+          <button class="nav-item" onclick="goTab('profile')"><span>♙</span>Cá nhân</button>
+        </div>
+      </section>
+
+      <section class="screen" id="profileScreen">
+        <div class="status"><span>09:41</span><span class="dots">•••⌁</span></div>
+        <h1>Cá nhân</h1>
+        <div class="profile-head">
+          <div class="avatar">H</div>
+          <h2 style="color:white;" id="profileName">Nguyễn Hà</h2>
+          <p id="profileEmail">nguyenha@gmail.com</p>
+          <p style="margin-top:7px;">Tài khoản đã xác minh ✓</p>
+        </div>
+        <div class="list-item" onclick="editProfile()">Thông tin cá nhân <span>›</span></div>
+        <div class="list-item" onclick="goTab('trips')">Lịch sử thuê xe <span>›</span></div>
+        <div class="list-item" onclick="showPaymentMethods()">Phương thức thanh toán <span>›</span></div>
+        <div class="list-item" onclick="goTab('offers')">Điểm thưởng & ưu đãi <span class="badge-soft">2 voucher</span></div>
+        <div class="list-item" onclick="openSupport()">Hỗ trợ khách hàng <span>›</span></div>
+        <button class="btn ghost" style="margin-top:18px;" onclick="logout()">Đăng xuất</button>
+        <div class="bottom-nav">
+          <button class="nav-item" onclick="goTab('home')"><span>⌂</span>Trang chủ</button>
+          <button class="nav-item" onclick="goTab('trips')"><span>⚭</span>Chuyến đi</button>
+          <button class="nav-item" onclick="goTab('offers')"><span>♙</span>Ưu đãi</button>
+          <button class="nav-item active" onclick="goTab('profile')"><span>♙</span>Cá nhân</button>
+        </div>
+      </section>
+
+      <div class="modal" id="modal">
+        <div class="sheet" id="sheet"></div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="side-panel">
+    <h2>GREEN WHEEL</h2>
+    <p class="small">Bản demo web mô phỏng app thuê xe máy điện: đăng ký, OTP, KYC, đặt xe, thanh toán, giao xe tận nơi, theo dõi chuyến đi, hỗ trợ, trả xe và đánh giá.</p>
+    <div class="feature-list">
+      <div class="feature"><div class="mini-icon">1</div><div><b>Tài khoản</b><span>Đăng nhập, đăng ký, OTP, xác minh CCCD/khuôn mặt.</span></div></div>
+      <div class="feature"><div class="mini-icon">2</div><div><b>Đặt xe</b><span>Chọn xe, địa điểm giao, gói thuê theo giờ/ngày/nhiều ngày.</span></div></div>
+      <div class="feature"><div class="mini-icon">3</div><div><b>Thanh toán</b><span>Voucher, ví điện tử, Visa, COD, chuyển khoản ngân hàng.</span></div></div>
+      <div class="feature"><div class="mini-icon">4</div><div><b>Vận hành</b><span>Theo dõi giao xe, đơn đang dùng, pin, GPS, gia hạn, trả xe.</span></div></div>
+    </div>
+  </aside>
+
+  <script>
+    const fmt = n => n.toLocaleString('vi-VN') + 'đ';
+    const vehicles = [
+      { id: 1, name: 'VinFast Evo200', type: 'Xe máy điện', cat: 'bike', emoji: '🛵', cls: '', range: '160 km', battery: '100%', price: 150000, rating: 4.9, tag: 'Phổ biến', near: true },
+      { id: 2, name: 'Dat Bike Weaver++', type: 'Xe máy điện', cat: 'bike', emoji: '🏍️', cls: 'red', range: '200 km', battery: '100%', price: 150000, rating: 4.8, tag: 'Mạnh mẽ', near: true },
+      { id: 3, name: 'VinFast Feliz S', type: 'Xe máy điện', cat: 'bike', emoji: '🛵', cls: 'blue', range: '180 km', battery: '96%', price: 130000, rating: 4.7, tag: 'Tiết kiệm', near: false },
+      { id: 4, name: 'Mini EV City', type: 'Ô tô điện', cat: 'car', emoji: '🚗', cls: 'darkgreen', range: '220 km', battery: '98%', price: 320000, rating: 4.8, tag: 'Gia đình', near: false }
+    ];
+
+    const state = {
+      user: JSON.parse(localStorage.getItem('gw_user') || '{"name":"Nguyễn Hà","email":"nguyenha@gmail.com","verified":true}'),
+      selected: vehicles[0],
+      package: 'day',
+      packageLabel: 'Gói thuê xe 1 ngày',
+      base: 150000,
+      discount: 0,
+      total: 150000,
+      payment: 'Momo',
+      deliveryTime: 'today',
+      activeTrip: JSON.parse(localStorage.getItem('gw_activeTrip') || 'null'),
+      history: JSON.parse(localStorage.getItem('gw_history') || '[]'),
+      rating: 5,
+      uploads: {}
+    };
+
+    function save() {
+      localStorage.setItem('gw_user', JSON.stringify(state.user));
+      localStorage.setItem('gw_activeTrip', JSON.stringify(state.activeTrip));
+      localStorage.setItem('gw_history', JSON.stringify(state.history));
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.getElementById('modal').classList.remove('active');
+      document.querySelector('.app').scrollTop = 0;
+    }
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 2400);
+    }
+
+    function switchAuth(mode) {
+      document.getElementById('loginBox').style.display = mode === 'login' ? 'block' : 'none';
+      document.getElementById('registerBox').style.display = mode === 'register' ? 'block' : 'none';
+    }
+
+    function login() {
+      const email = document.getElementById('loginEmail').value.trim();
+      if (!email || !document.getElementById('loginPassword').value.trim()) return toast('Vui lòng nhập đủ email và mật khẩu.');
+      state.user.email = email;
+      state.user.name = state.user.name || 'Nguyễn Hà';
+      save();
+      refreshUser();
+      showScreen('homeScreen');
+      renderVehicles();
+    }
+
+    function startOtp() {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      if (!name || !email || !document.getElementById('regPassword').value.trim()) return toast('Vui lòng nhập đầy đủ thông tin đăng ký.');
+      state.user = { name, email, verified: false };
+      document.getElementById('otpTarget').textContent = email;
+      save();
+      showScreen('otpScreen');
+      toast('Mã OTP demo là 123456.');
+    }
+
+    function verifyOtp() {
+      if (document.getElementById('otp').value.trim() !== '123456') return toast('OTP chưa đúng. Dùng mã demo 123456.');
+      showScreen('kycScreen');
+    }
+
+    function markUpload(id) {
+      state.uploads[id] = true;
+      document.getElementById(id).classList.add('done');
+      document.getElementById(id).innerHTML = '✓<br>Đã tải lên';
+      const ok = state.uploads.frontId && state.uploads.backId && state.uploads.faceId;
+      document.getElementById('kycStatus').textContent = ok ? 'Đã sẵn sàng xác thực' : 'Chưa đủ ảnh';
+    }
+
+    function finishKyc() {
+      const ok = state.uploads.frontId && state.uploads.backId && state.uploads.faceId;
+      if (!ok) return toast('Bạn cần bấm đủ 3 mục: CCCD trước, CCCD sau và khuôn mặt.');
+      state.user.verified = true;
+      save();
+      refreshUser();
+      showScreen('homeScreen');
+      renderVehicles();
+      toast('Đăng ký và xác minh thành công.');
+    }
+
+    function refreshUser() {
+      const first = (state.user.name || 'Hà').split(' ').slice(-1)[0];
+      document.getElementById('helloName').textContent = first;
+      document.getElementById('profileName').textContent = state.user.name || 'Nguyễn Hà';
+      document.getElementById('profileEmail').textContent = state.user.email || 'nguyenha@gmail.com';
+    }
+
+    function renderVehicles(filter = 'suggest') {
+      const list = document.getElementById('vehicleList');
+      let data = vehicles;
+      if (filter === 'suggest') data = vehicles.filter(v => v.cat === 'bike').slice(0,2);
+      if (filter === 'bike') data = vehicles.filter(v => v.cat === 'bike');
+      if (filter === 'car') data = vehicles.filter(v => v.cat === 'car');
+      if (filter === 'near') data = vehicles.filter(v => v.near);
+      if (filter === 'all') data = vehicles;
+      list.innerHTML = data.map(v => `
+        <div class="vehicle-card" onclick="openVehicle(${v.id})">
+          <div class="thumb ${v.cls}">${v.emoji}</div>
+          <div>
+            <h3>${v.name}</h3>
+            <div class="meta">⌁ ${v.range} · ${v.battery} pin</div>
+            <div class="price">${fmt(v.price)} <small>/ ngày</small></div>
+          </div>
+          <div style="font-size:32px;color:#c8d5e0;">›</div>
+        </div>
+      `).join('') || `<div class="empty"><div class="emoji">🔎</div>Chưa có xe phù hợp.</div>`;
+    }
+
+    function filterVehicle(filter) {
+      document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.filter === filter));
+      renderVehicles(filter);
+    }
+
+    function openVehicle(id) {
+      state.selected = vehicles.find(v => v.id === id) || vehicles[0];
+      const v = state.selected;
+      document.getElementById('detailHero').textContent = v.emoji;
+      document.getElementById('detailType').textContent = v.type;
+      document.getElementById('detailTag').textContent = v.tag;
+      document.getElementById('detailName').textContent = v.name;
+      document.getElementById('detailBattery').textContent = v.battery;
+      document.getElementById('detailRange').textContent = v.range;
+      document.getElementById('detailPrice').innerHTML = `${fmt(v.price)} <small>/ ngày</small>`;
+      document.getElementById('detailRating').textContent = v.rating;
+      showScreen('vehicleScreen');
+    }
+
+    function toggleFav() { toast('Đã thêm xe vào mục yêu thích.'); }
+
+    function startBooking() {
+      if (!state.user.verified) return toast('Bạn cần xác minh tài khoản trước khi đặt xe.');
+      updateEstimate();
+      showScreen('bookingScreen');
+    }
+
+    function selectDeliveryTime(t) {
+      state.deliveryTime = t;
+      document.querySelectorAll('#bookingScreen .option[data-time]').forEach(o => o.classList.toggle('active', o.dataset.time === t));
+    }
+
+    function updateEstimate() {
+      const p = document.getElementById('rentalPackage')?.value || state.package;
+      state.package = p;
+      if (p === 'hour') { state.base = 50000; state.packageLabel = 'Gói thuê xe 1 giờ'; }
+      if (p === 'day') { state.base = state.selected.price; state.packageLabel = 'Gói thuê xe 1 ngày'; }
+      if (p === 'days') { state.base = 420000; state.packageLabel = 'Gói thuê xe 3 ngày'; }
+      if (p === 'week') { state.base = 900000; state.packageLabel = 'Gói thuê xe 7 ngày'; }
+      calcTotal();
+    }
+
+    function calcTotal() {
+      state.total = Math.max(0, state.base - state.discount);
+    }
+
+    function goPayment() {
+      updateEstimate();
+      const addr = document.getElementById('deliveryAddress').value.trim();
+      if (!addr) return toast('Vui lòng nhập địa điểm giao xe.');
+      document.getElementById('payThumb').className = 'thumb ' + state.selected.cls;
+      document.getElementById('payThumb').textContent = state.selected.emoji;
+      document.getElementById('payName').textContent = state.selected.name;
+      document.getElementById('payAddress').textContent = addr;
+      refreshPayment();
+      showScreen('paymentScreen');
+    }
+
+    function applyVoucher() {
+      const code = document.getElementById('voucher').value.trim().toUpperCase();
+      if (['WELCOME20', 'FRIEND20'].includes(code)) {
+        state.discount = 20000;
+        toast('Áp dụng mã giảm giá thành công.');
+      } else if (!code) {
+        state.discount = 0;
+        toast('Đã bỏ mã giảm giá.');
+      } else {
+        state.discount = 0;
+        toast('Mã không hợp lệ. Thử WELCOME20 hoặc FRIEND20.');
+      }
+      calcTotal();
+      refreshPayment();
+    }
+
+    function refreshPayment() {
+      document.getElementById('packageLabel').textContent = state.packageLabel;
+      document.getElementById('basePrice').textContent = fmt(state.base);
+      document.getElementById('voucherLine').style.display = state.discount ? 'flex' : 'none';
+      document.getElementById('voucherAmount').textContent = '-' + fmt(state.discount);
+      document.getElementById('totalPrice').textContent = fmt(state.total);
+      document.getElementById('payButton').textContent = 'Thanh toán ' + fmt(state.total);
+    }
+
+    function selectPay(p) {
+      state.payment = p;
+      document.querySelectorAll('#paymentScreen .option[data-pay]').forEach(o => o.classList.toggle('active', o.dataset.pay === p));
+    }
+
+    function confirmPayment() {
+      state.activeTrip = {
+        code: '#GW' + Math.floor(10000 + Math.random() * 90000),
+        vehicle: state.selected,
+        package: state.packageLabel.replace('Gói thuê xe ', ''),
+        address: document.getElementById('deliveryAddress').value,
+        total: state.total,
+        paidAt: new Date().toLocaleString('vi-VN'),
+        payment: state.payment,
+        status: 'Đang giao xe'
+      };
+      save();
+      showScreen('deliveryScreen');
+      toast('Thanh toán thành công. Đơn đã chuyển đến bộ phận vận hành.');
+    }
+
+    function handover() {
+      if (!state.activeTrip) return;
+      state.activeTrip.status = 'Đang sử dụng';
+      state.activeTrip.startedAt = new Date().toISOString();
+      save();
+      refreshActive();
+      showScreen('activeScreen');
+      toast('Đã xác nhận bàn giao. Chuyến thuê bắt đầu.');
+    }
+
+    function refreshActive() {
+      if (!state.activeTrip) return;
+      const t = state.activeTrip;
+      document.getElementById('orderCode').textContent = t.code;
+      document.getElementById('activeName').textContent = t.vehicle.name;
+      document.getElementById('activeAddress').textContent = t.address;
+      document.getElementById('paidNow').textContent = fmt(t.total);
+      document.getElementById('batteryNow').textContent = t.lowBattery ? '18%' : '100%';
+      document.getElementById('distanceNow').textContent = t.lowBattery ? '37 km' : '0 km';
+    }
+
+    function extendRental() {
+      if (!state.activeTrip) return;
+      state.activeTrip.total += 50000;
+      state.activeTrip.extended = true;
+      save();
+      refreshActive();
+      toast('Đã gia hạn thêm 1 giờ. Phí cộng thêm 50.000đ.');
+    }
+
+    function simulateLowBattery() {
+      if (!state.activeTrip) return;
+      state.activeTrip.lowBattery = true;
+      save();
+      refreshActive();
+      toast('Cảnh báo: pin xe còn 18%. Vui lòng tìm điểm sạc gần nhất.');
+    }
+
+    function goReturn() {
+      if (!state.activeTrip) return toast('Chưa có chuyến thuê đang hoạt động.');
+      document.getElementById('returnThumb').className = 'thumb ' + state.activeTrip.vehicle.cls;
+      document.getElementById('returnThumb').textContent = state.activeTrip.vehicle.emoji;
+      document.getElementById('returnName').textContent = state.activeTrip.vehicle.name;
+      document.getElementById('returnPackage').textContent = state.activeTrip.package;
+      renderStars();
+      showScreen('returnScreen');
+    }
+
+    function renderStars() {
+      const wrap = document.getElementById('stars');
+      wrap.innerHTML = [1,2,3,4,5].map(i => `<span class="star ${i <= state.rating ? 'active' : ''}" onclick="setRating(${i})">★</span>`).join('');
+    }
+
+    function setRating(n) {
+      state.rating = n;
+      renderStars();
+    }
+
+    function finishTrip() {
+      if (!state.activeTrip) return;
+      const record = {
+        ...state.activeTrip,
+        status: 'Hoàn tất',
+        rating: state.rating,
+        review: document.getElementById('reviewText').value,
+        feedback: document.getElementById('feedbackText').value,
+        finishedAt: new Date().toLocaleString('vi-VN')
+      };
+      state.history.unshift(record);
+      state.activeTrip = null;
+      save();
+      document.getElementById('finalRating').textContent = state.rating.toFixed(1);
+      showScreen('successScreen');
+    }
+
+    function goHomeAfterSuccess() {
+      showScreen('homeScreen');
+      renderVehicles();
+    }
+
+    function goTab(tab) {
+      if (tab === 'home') { showScreen('homeScreen'); renderVehicles(); }
+      if (tab === 'trips') { renderTrips(); showScreen('tripsScreen'); }
+      if (tab === 'offers') showScreen('offersScreen');
+      if (tab === 'profile') { refreshUser(); showScreen('profileScreen'); }
+    }
+
+    function renderTrips() {
+      const c = document.getElementById('tripsContent');
+      let html = '';
+      if (state.activeTrip) {
+        html += `<div class="active-card" onclick="refreshActive();showScreen('activeScreen')" style="cursor:pointer;">
+          <div class="row"><span class="badge">${state.activeTrip.status}</span><b>${state.activeTrip.code}</b></div>
+          <h1 style="color:white;margin:22px 0 8px;">${state.activeTrip.vehicle.name}</h1>
+          <p>${state.activeTrip.address}</p>
+        </div>`;
+      }
+      if (state.history.length) {
+        html += `<div class="section-title">Lịch sử thuê xe</div>` + state.history.map(h => `
+          <div class="vehicle-card" style="grid-template-columns:70px 1fr;">
+            <div class="thumb ${h.vehicle.cls}">${h.vehicle.emoji}</div>
+            <div>
+              <h3>${h.vehicle.name}</h3>
+              <div class="meta">${h.finishedAt || h.paidAt} · ⭐ ${h.rating || 5}</div>
+              <div class="price">${fmt(h.total)} <small>· Hoàn tất</small></div>
+            </div>
+          </div>
+        `).join('');
+      }
+      c.innerHTML = html || `<div class="empty"><div class="emoji">🛵</div><b>Chưa có chuyến đi</b><p>Bạn hãy chọn xe và đặt chuyến thuê đầu tiên.</p></div>`;
+    }
+
+    function openSupport() {
+      const sheet = document.getElementById('sheet');
+      sheet.innerHTML = `
+        <h3>Hỗ trợ khách hàng</h3>
+        <p>Chọn kênh hỗ trợ khi xe gặp sự cố, cần đổi pin hoặc cần nhân viên liên hệ.</p>
+        <div class="help-grid">
+          <div class="help-tile" onclick="toast('Đang gọi 1900 6868...');closeModal()">☎<b>Gọi hotline</b><p>1900 6868</p></div>
+          <div class="help-tile" onclick="toast('Đã gửi yêu cầu chat hỗ trợ.');closeModal()">💬<b>Chat hỗ trợ</b><p>Phản hồi nhanh</p></div>
+          <div class="help-tile" onclick="toast('Đã gửi yêu cầu cứu hộ kỹ thuật.');closeModal()">🛠️<b>Báo sự cố</b><p>Xe hỏng, thủng lốp</p></div>
+          <div class="help-tile" onclick="toast('Đang tìm trạm sạc gần bạn.');closeModal()">🔋<b>Pin yếu</b><p>Tìm điểm sạc</p></div>
+        </div>
+        <button class="btn ghost" onclick="closeModal()">Đóng</button>
+      `;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function openPolicy() {
+      document.getElementById('sheet').innerHTML = `
+        <h3>Điều khoản sử dụng demo</h3>
+        <p>Khách hàng cần sử dụng xe đúng mục đích, tuân thủ luật giao thông, bảo quản tài sản và trả xe đúng hạn. Green Wheel theo dõi GPS để hỗ trợ vận hành và xử lý sự cố.</p>
+        <div class="card"><b>Bảo mật thanh toán</b><p>Tất cả giao dịch trong bản thật cần mã hóa và đi qua cổng thanh toán đạt chuẩn. Bản demo này chỉ mô phỏng giao diện.</p></div>
+        <button class="btn" onclick="closeModal()">Tôi đã hiểu</button>
+      `;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function editProfile() {
+      document.getElementById('sheet').innerHTML = `
+        <h3>Cập nhật thông tin</h3>
+        <div class="field"><label>Họ và tên</label><input id="editName" value="${state.user.name || ''}"></div>
+        <div class="field"><label>Email / số điện thoại</label><input id="editEmail" value="${state.user.email || ''}"></div>
+        <button class="btn" onclick="saveProfile()">Lưu thay đổi</button>
+      `;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function saveProfile() {
+      state.user.name = document.getElementById('editName').value;
+      state.user.email = document.getElementById('editEmail').value;
+      save();
+      refreshUser();
+      closeModal();
+      toast('Đã cập nhật thông tin cá nhân.');
+    }
+
+    function showPaymentMethods() {
+      document.getElementById('sheet').innerHTML = `
+        <h3>Phương thức thanh toán</h3>
+        <div class="list-item">Ví điện tử MoMo <span class="badge-soft">Mặc định</span></div>
+        <div class="list-item">Thẻ Visa •••• 2086 <span>›</span></div>
+        <div class="list-item">Chuyển khoản ngân hàng <span>›</span></div>
+        <button class="btn light" onclick="toast('Đã mở form liên kết thẻ mới.');closeModal()">+ Thêm phương thức</button>
+      `;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() { document.getElementById('modal').classList.remove('active'); }
+
+    function logout() {
+      showScreen('authScreen');
+      toast('Đã đăng xuất.');
+    }
+
+    document.getElementById('modal').addEventListener('click', (e) => {
+      if (e.target.id === 'modal') closeModal();
+    });
+
+    refreshUser();
+    renderVehicles();
+    renderStars();
+    if (state.activeTrip) refreshActive();
+  </script>
+</body>
+</html>
